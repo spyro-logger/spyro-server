@@ -1,7 +1,7 @@
 //All of these can be constants.. check once
 const express = require('express');
-const JiraApi = require('jira-client');
 const btoa = require('btoa');
+const atob = require('atob');
 const axios = require("axios");
 const router = express.Router();
 const moment = require('moment');
@@ -48,9 +48,8 @@ router.get('/jobDetails', (req, res) => {
   const splunkAPIURL = req.query.splunkAPIURL;
   const splunkApp =  req.query.splunkApp;
   const searchId = req.query.searchId;
-  // const username = req.query.username;
-  const username = req.query.username;
-  const password = req.query.password;
+  const username = atob(req.query.username);
+  const password = atob(req.query.password);
 
   const retrieveJobBySIDUrl = `${splunkAPIURL}/nobody/${splunkApp}/search/jobs/${searchId}?output_mode=json`;
   const retrieveJobSummaryUrl = `${splunkAPIURL}/nobody/${splunkApp}/search/jobs/${searchId}/summary?output_mode=json`;
@@ -91,11 +90,10 @@ router.post('/event', (req, res, next) => {
   console.log("Inside create event post call");
 
     const eventParams = req.body;
-    const username = eventParams.username;
-    const password = eventParams.password;
-
-     const createEventTypeUrl = `${eventParams.splunkAPIURL}/${username}/${eventParams.splunkApp}/saved/eventtypes`;
-     const basicAuth = `Basic ${btoa(`${username}:${password}`)}`;
+    const username = atob(eventParams.username);
+    const password = atob(eventParams.password);
+    const createEventTypeUrl = `${eventParams.splunkAPIURL}/${username}/${eventParams.splunkApp}/saved/eventtypes`;
+    const basicAuth = `Basic ${btoa(`${username}:${password}`)}`;
 
      const formData = `name=${encodeURIComponent(eventParams.jiraIdentifier)}&priority=5&disabled=0&description=${encodeURIComponent(
       eventParams.jiraIdentifier,
@@ -114,11 +112,11 @@ router.post('/event', (req, res, next) => {
 
 //Change event permissions
 router.post('/event/permission', (req, res, next) => {
-  console.log("Inside update event post call");
+  console.log("Inside update event permission post call");
 
     const eventParams = req.body;
-    const username = eventParams.username;
-    const password = eventParams.password;
+    const username = atob(eventParams.username);
+    const password = atob(eventParams.password);
 
      const updateEventTypeUrl = `${eventParams.splunkAPIURL}/${username}/${eventParams.splunkApp}/saved/eventtypes/${eventParams.jiraIdentifier}/acl`;
      const basicAuth = `Basic ${btoa(`${username}:${password}`)}`;

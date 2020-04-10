@@ -1,16 +1,17 @@
 const express = require('express');
-const JiraApi = require('jira-client');
+const jiraApi = require('jira-client');
+const atob = require('atob');
 const router = express.Router();
 
 //Create new issue
 router.post('/issue', async (req, res) => {
   console.log('Inside create new issue');
   try {
-    const jira = new JiraApi({
+    const jira = new jiraApi({
       protocol: 'https',
       host: req.body.jiraHost,
-      username: req.body.username,
-      password: req.body.password,
+      username: atob(req.body.username),
+      password: atob(req.body.password),
       apiVersion: '2',
       strictSSL: true,
     });
