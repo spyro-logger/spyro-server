@@ -1,8 +1,8 @@
-//All of these can be constants.. check once
 const express = require('express');
 const btoa = require('btoa');
 const atob = require('atob');
 const axios = require("axios");
+
 const router = express.Router();
 const moment = require('moment');
 
@@ -41,13 +41,15 @@ const populateRequiredJobDetails = (jobBySIDResponse, jobFirstEventResponse, job
   return jobDetails;
 };
 
-/* GET Splunk details. */
+/* GET Splunk Job details. */
 router.get('/jobDetails', (req, res) => {
+  // eslint-disable-next-line no-console
   console.log('INSIDE jobDetails retriever');
+  // eslint-enable-next-line no-console
 
-  const splunkAPIURL = req.query.splunkAPIURL;
-  const splunkApp =  req.query.splunkApp;
-  const searchId = req.query.searchId;
+  const {splunkAPIURL} = req.query;
+  const {splunkApp} = req.query;
+  const {searchId} = req.query;
   const username = atob(req.query.username);
   const password = atob(req.query.password);
 
@@ -57,7 +59,7 @@ router.get('/jobDetails', (req, res) => {
 
   const auth = {username, password};
 
-  return new Promise((resolve, reject) => {
+  return new Promise(() => {
     axios
       .all([
         axios.get(retrieveJobBySIDUrl, {
@@ -80,14 +82,17 @@ router.get('/jobDetails', (req, res) => {
         const errorMessage = `Error while retrieving splunk job details: ${error}`;
         // eslint-disable-next-line no-console
         console.error(errorMessage);
+        // eslint-enable-next-line no-console
         res.status(error.response.status).json({ message: `${error.response.statusText}` });
       });
   });
 });
 
-// Create event post call
-router.post('/event', (req, res, next) => {
+/* Create event post call. */
+router.post('/event', (req, res) => {
+  /* eslint-disable no-console */
   console.log("Inside create event post call");
+  /* eslint-enable no-console */
 
     const eventParams = req.body;
     const username = atob(eventParams.username);
@@ -110,9 +115,12 @@ router.post('/event', (req, res, next) => {
       });
 });
 
-//Change event permissions
-router.post('/event/permission', (req, res, next) => {
+//
+/* Post call to change event permissions. */
+router.post('/event/permission', (req, res) => {
+  /* eslint-disable no-console */
   console.log("Inside update event permission post call");
+  /* eslint-enable no-console */
 
     const eventParams = req.body;
     const username = atob(eventParams.username);

@@ -1,13 +1,16 @@
 const express = require('express');
-const jiraApi = require('jira-client');
+const JiraApi = require('jira-client');
 const atob = require('atob');
+
 const router = express.Router();
 
-//Create new issue
+/* POST call to create new issue. */
 router.post('/issue', async (req, res) => {
+  /* eslint-disable no-console */
   console.log('Inside create new issue');
+  /* eslint-enable no-console */
   try {
-    const jira = new jiraApi({
+    const jira = new JiraApi({
       protocol: 'https',
       host: req.body.jiraHost,
       username: atob(req.body.username),
@@ -18,7 +21,6 @@ router.post('/issue', async (req, res) => {
 
     const issueJSON = { fields: JSON.parse(req.body.fieldValues) };
     const createIssueResponse = await jira.addNewIssue(issueJSON);
-    console.log(JSON.stringify(createIssueResponse));
     res.json(createIssueResponse);
   } catch (error) {
     const errorMessage = `Error while creating JIRA issue: ${error}`;
