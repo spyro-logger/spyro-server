@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "format": "prettier ./src/**/*.{js,json} --write",
+    "prettier": "prettier --write \"./**/*.js?(x)\" \"./**/*.md\"",
     "lint": "eslint --ext .js,.jsx .",
     "lint:fix": "eslint --fix --ext .js,.jsx .",
     "start": "node ./bin/www",
@@ -19,12 +19,6 @@
     "btoa": "^1.2.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
-    "jira-client": "^6.15.0",
-    "moment": "^2.24.0",
-    "morgan": "~1.9.1",
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.3.0",
@@ -33,11 +27,23 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "husky": "^4.2.5",
+    "jade": "~1.11.0",
+    "jira-client": "^6.15.0",
     "lint-staged": "^9.2.5",
+    "moment": "^2.24.0",
+    "morgan": "~1.9.1",
     "prettier": "1.18.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "*.{js,jsx,md}": [
