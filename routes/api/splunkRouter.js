@@ -101,7 +101,7 @@ router.post("/event", (req, res) => {
     eventParams.jiraIdentifier
   )}&priority=5&disabled=0&description=${encodeURIComponent(
     eventParams.jiraIdentifier
-  )}&search=${eventParams.searchString}`;
+  )}&search=${encodeURIComponent(eventParams.searchString)}`;
 
   const headers = {
     "Content-type": "application/x-www-form-urlencoded",
